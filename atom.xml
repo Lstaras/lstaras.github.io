@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Lstaras&#39;s huarache</title>
+  
+  <subtitle>No bb &amp; do it.</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="Lstaras.github.com/"/>
+  <updated>2019-03-14T03:35:57.465Z</updated>
+  <id>Lstaras.github.com/</id>
+  
+  <author>
+    <name>Lstaras</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java中Collections和Arrays排序方法</title>
+    <link href="Lstaras.github.com/2019/03/14/Java%E4%B8%ADCollections%E5%92%8CArrays%E6%8E%92%E5%BA%8F%E6%96%B9%E6%B3%95/"/>
+    <id>Lstaras.github.com/2019/03/14/Java中Collections和Arrays排序方法/</id>
+    <published>2019-03-14T03:34:57.000Z</published>
+    <updated>2019-03-14T03:35:57.465Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Java中自带的排序方法"><a href="#Java中自带的排序方法" class="headerlink" title="Java中自带的排序方法"></a>Java中自带的排序方法</h2><p>分为</p><blockquote><p>Collections.sort();</p><p>Arrays.sort();</p></blockquote><p>前者用于List，后者用于Array。</p><p><a href="http://blog.csdn.net/timheath/article/details/68930482" target="_blank" rel="noopener">Collections.sort()和Arrays.sort()排序算法选择</a> —腹黑大壁花</p><p>两者内部使用的排序方法不同。</p><p>总之，</p><p><code>Arrays.sort()</code>：如果数组长度大于等于286且连续性好的话，就用归并排序，如果大于等于286且连续性不好的话就用双轴快速排序。如果长度小于286且大于等于47的话就用双轴快速排序，如果长度小于47的话就用插入排序。</p><p><code>Collections.sort()</code>：当LegacyMergeSort.userRequested为true时使用归并排序，不为true的话会用TimSort排序算法。</p><p>通过计算，在千万整数时Collections的sort()方法耗时约为Arrays的70%。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;Java中自带的排序方法&quot;&gt;&lt;a href=&quot;#Java中自带的排序方法&quot; class=&quot;headerlink&quot; title=&quot;Java中自带的排序方法&quot;&gt;&lt;/a&gt;Java中自带的排序方法&lt;/h2&gt;&lt;p&gt;分为&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Collect
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="Lstaras.github.com/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux下几种I/O测速</title>
+    <link href="Lstaras.github.com/2019/03/14/Linux%E4%B8%8B%E5%87%A0%E7%A7%8DI-O%E6%B5%8B%E9%80%9F/"/>
+    <id>Lstaras.github.com/2019/03/14/Linux下几种I-O测速/</id>
+    <published>2019-03-14T02:51:59.000Z</published>
+    <updated>2019-03-14T03:30:40.636Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="DD命令—服务器磁盘测速"><a href="#DD命令—服务器磁盘测速" class="headerlink" title="DD命令—服务器磁盘测速"></a>DD命令—服务器磁盘测速</h1><h2 id="Ways-in-which-you-can-invoke-‘dd’-to-test-the-write-speed"><a href="#Ways-in-which-you-can-invoke-‘dd’-to-test-the-write-speed" class="headerlink" title="Ways in which you can invoke ‘dd’ to test the write speed:"></a>Ways in which you can invoke ‘dd’ to test the write speed:</h2><ol><li>dd bs=1M count=256 if=/dev/zero of=test2.  </li><li>dd bs=1M count=256 if=/dev/zero of=test; sync3.  </li><li>dd bs=1M count=256 if=/dev/zero of=test conv=fdatasync</li><li>dd bs=1M count=256 if=/dev/zero of=test oflag=dsync</li></ol><h2 id="What-is-the-difference-between-those"><a href="#What-is-the-difference-between-those" class="headerlink" title="What is the difference between those?"></a>What is the difference between those?</h2><ol><li><p>dd bs=1M count=256 if=/dev/zero of=test<br>The default behaviour of dd is to not “ sync ” (i.e. not ask the OS to completely write the data to disk before dd exiting). The above command will just commit your 128 MB of data into a RAM buffer (write cache) – this will be really fast and it will show you the hugely inflated benchmark result right away. However, the server in the background is still busy, continuing to write out data from the RAM cache to disk.</p><blockquote><p>dd的默认行为不是“同步”的（dd退出之前并没有要求操作系统向磁盘完全写入），这条命令将只会提交128兆的数据给内存缓冲区-这个过程非常快并且那时会给你一个非常给力的测试结果。然而后台的服务器任然处于繁忙状态，持续从内存缓存向磁盘写出数据。</p></blockquote></li><li><p>dd bs=1M count=256 if=/dev/zero of=test; sync<br>Absolutely identical to the previous case, as anyone who understands how unix shell works should surely know that adding a sync does not affect the operation of previous command in any way, because it is executed independently, after the first command completes. So your (inflated) MB/sec value is already printed on screen while that sync is only preparing to be executed.</p><blockquote><p>与前一种情况完全相同，因为任何了解unix shell如何工作的人都应该知道添加同步不会以任何方式影响上一个命令的操作，因为它是在第一个命令完成后独立执行的。 因此，你的兆每秒值已经打印在屏幕上，而该同步仅准备执行。</p></blockquote></li><li><p>dd bs=1M count=256 if=/dev/zero of=test conv=fdatasync<br>This tells dd to require a complete “ sync ” once, right before it exits. So it commits the whole 256 MB of data, then tells the operating system: “ OK, now ensure this is completely on disk ”, only then measures the total time it took to do all that and calculates the benchmark result.</p><blockquote><p>这条命令告诉dd在退出前需要一次完整的同步。所以它会提交一个完整的256兆的数据并且通知操作系统“我好了，现在磁盘上是完整的数据了”，然后才测量完整的操作所需时间并计算基准分数。</p></blockquote></li><li><p>dd bs=1M count=256 if=/dev/zero of=test oflag=dsync<br>Here dd will ask for completely synchronous output to disk, i.e. ensure that its write requests don‘t even return until the submitted data is on disk. In the above example, this will mean sync’ing once per megabyte, or 256 times in total. It will be the slowest mode, as the write cache is basically unused at all in this case.</p><blockquote><p>这里dd将要求完全同步输出到磁盘，即确保其写入请求甚至不会返回，直到提交的数据在磁盘上。在上面的例子中，这意味着每兆字节一次同步，或总共256次。它将是最慢的模式，因为在这种情况下写缓存基本上是未使用的。</p></blockquote></li></ol><h2 id="dd命令"><a href="#dd命令" class="headerlink" title="dd命令"></a>dd命令</h2><p>if=“” 输入文件<br>of=”” 输出文件  </p><blockquote><p>dd if=”aaa” of=”aaa.back”</p></blockquote><p>bs=512 count=1 以512b为1个block大小，备份1个bs</p><blockquote><p>dd if=”/dev/a1” of=”/tmp/a.whole.disk” 备份磁盘(带有文件系统)<br>dd if=”/tmp/a.whole.disk” of=”/dev/a2” 恢复磁盘(磁柱要大于原磁盘)</p></blockquote><h2 id="翻译"><a href="#翻译" class="headerlink" title="翻译"></a>翻译</h2><p>待考过4级…</p><p>19.03已考过六级，现已更新</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;DD命令—服务器磁盘测速&quot;&gt;&lt;a href=&quot;#DD命令—服务器磁盘测速&quot; class=&quot;headerlink&quot; title=&quot;DD命令—服务器磁盘测速&quot;&gt;&lt;/a&gt;DD命令—服务器磁盘测速&lt;/h1&gt;&lt;h2 id=&quot;Ways-in-which-you-can-inv
+      
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="Lstaras.github.com/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>简单的市场术语</title>
+    <link href="Lstaras.github.com/2018/01/04/%E7%AE%80%E5%8D%95%E7%9A%84%E5%B8%82%E5%9C%BA%E6%9C%AF%E8%AF%AD/"/>
+    <id>Lstaras.github.com/2018/01/04/简单的市场术语/</id>
+    <published>2018-01-04T03:36:23.000Z</published>
+    <updated>2019-03-14T03:41:39.320Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简单的市场术语"><a href="#简单的市场术语" class="headerlink" title="简单的市场术语"></a>简单的市场术语</h1><p>昨天看到知乎上一句话很有道理</p><pre><code>当今中国穷人家孩子晋级中产唯一的出路：写代码搞金融在代码圈搞金融在金融圈写代码</code></pre><blockquote><p>所以今天补补知识顺便对我的EOS表示一下尊敬 :)</p></blockquote><h2 id="代号"><a href="#代号" class="headerlink" title="代号"></a>代号</h2><h3 id="多、空"><a href="#多、空" class="headerlink" title="多、空"></a>多、空</h3><p>多：看好<br>空：看衰</p><h3 id="仓"><a href="#仓" class="headerlink" title="仓"></a>仓</h3><p>手中持有的期货</p><h3 id="头"><a href="#头" class="headerlink" title="头"></a>头</h3><p>投资者</p><h2 id="常见的术语"><a href="#常见的术语" class="headerlink" title="常见的术语"></a>常见的术语</h2><h3 id="建仓"><a href="#建仓" class="headerlink" title="建仓"></a>建仓</h3><p>在恰当时买入</p><h3 id="清仓"><a href="#清仓" class="headerlink" title="清仓"></a>清仓</h3><p>抛售</p><h3 id="平仓"><a href="#平仓" class="headerlink" title="平仓"></a>平仓</h3><p>原先买入的就卖出，原先是卖出(沽空)的就买入</p><h3 id="爆仓"><a href="#爆仓" class="headerlink" title="爆仓"></a>爆仓</h3><p>在透支投资后，亏损额超过了自有资金  </p><blockquote><p>由于行情变化过快，投资者在没来得及追加保证金的时候，帐户上的保证金已经不能够维持原来的合约了，这种因保证金不足而被强行平仓所导致的保证金“归零”</p></blockquote><h3 id="补仓"><a href="#补仓" class="headerlink" title="补仓"></a>补仓</h3><p>在预期前景好时追加</p><h3 id="空仓"><a href="#空仓" class="headerlink" title="空仓"></a>空仓</h3><p>不持有（满现金）</p><h3 id="满仓"><a href="#满仓" class="headerlink" title="满仓"></a>满仓</h3><p>全持有（0现金）</p><h3 id="追高"><a href="#追高" class="headerlink" title="追高"></a>追高</h3><p>在高位买入</p><h3 id="追涨"><a href="#追涨" class="headerlink" title="追涨"></a>追涨</h3><p>在有涨势时买入</p><h3 id="利好（多）、利空"><a href="#利好（多）、利空" class="headerlink" title="利好（多）、利空"></a>利好（多）、利空</h3><p>一个规则或者事件的公开对市场或者个股的影响（好坏）</p><h3 id="多头"><a href="#多头" class="headerlink" title="多头"></a>多头</h3><p>对股票后市看好，先行买进股票，等股价涨至某个价位，卖出股票赚取差价的投资者 </p><h3 id="空头"><a href="#空头" class="headerlink" title="空头"></a>空头</h3><p>股价已上涨到了最高点，很快便会下跌，或当股票已开始下跌时，变为还会继续下跌，趁高价时卖出的投资者</p><h3 id="盘整"><a href="#盘整" class="headerlink" title="盘整"></a>盘整</h3><p>股价跌不下去，也涨不上去，就是横盘调整，反反复复</p><h3 id="低位盘整"><a href="#低位盘整" class="headerlink" title="低位盘整"></a>低位盘整</h3><p>低位盘整，横有多长，竖有多高。</p><h3 id="高位盘整"><a href="#高位盘整" class="headerlink" title="高位盘整"></a>高位盘整</h3><p>高位盘整，久盘必跌</p><h3 id="看空"><a href="#看空" class="headerlink" title="看空"></a>看空</h3><p>对未来不看好</p><h3 id="做空"><a href="#做空" class="headerlink" title="做空"></a>做空</h3><p>认为即将下跌，现在卖出，跌后买入，赚取差价</p><h3 id="看空不做空"><a href="#看空不做空" class="headerlink" title="看空不做空"></a>看空不做空</h3><p>当出现空头趋势，但是利润有限，可能反转，应当观望（处于上涨修正行情）</p><h3 id="多杀多"><a href="#多杀多" class="headerlink" title="多杀多"></a>多杀多</h3><p>普遍认为当天股价将上涨，于是市场上抢多头帽子的特别多，然而股价却没有大幅度上涨，等交易快结束时，竞相卖出，造成收盘价大幅度下跌的情况</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;简单的市场术语&quot;&gt;&lt;a href=&quot;#简单的市场术语&quot; class=&quot;headerlink&quot; title=&quot;简单的市场术语&quot;&gt;&lt;/a&gt;简单的市场术语&lt;/h1&gt;&lt;p&gt;昨天看到知乎上一句话很有道理&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;当今中国穷人家孩子晋级中产唯一的出路：
+
+      
+    
+    </summary>
+    
+    
+      <category term="Market" scheme="Lstaras.github.com/tags/Market/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>转:nginx与tomcat实现负载均衡</title>
+    <link href="Lstaras.github.com/2018/01/03/%E8%BD%AC-nginx%E4%B8%8Etomcat%E5%AE%9E%E7%8E%B0%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/"/>
+    <id>Lstaras.github.com/2018/01/03/转-nginx与tomcat实现负载均衡/</id>
+    <published>2018-01-03T03:31:18.000Z</published>
+    <updated>2019-03-14T03:42:02.844Z</updated>
+    
+    <content type="html"><![CDATA[<p>##几篇文章很好的解答了问题：</p><p><a href="http://sfau.lt/b5GUgm" target="_blank" rel="noopener">Nginx+Tomcat整合体验</a> —liaipeng</p><p><a href="https://www.cnblogs.com/naaoveGIS/p/5478208.html" target="_blank" rel="noopener">Nginx与tomcat组合的简单使用</a> —naaoveGIS</p><p><a href="http://blog.csdn.net/wang379275614/article/details/47778201" target="_blank" rel="noopener">Nginx+Tomcat搭建高性能负载均衡集群</a>—wang379275614</p><p>实现此功能可以很大程度上利用已有的硬件资源，减少负载的压力。</p><p>之后可以将静态网页的HTML、CSS、JS、图片等由nginx缓存提供，JSP由tomcat负责，Android端的后端也可以部署在nginx上，实现有条不紊的并发。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;##几篇文章很好的解答了问题：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://sfau.lt/b5GUgm&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Nginx+Tomcat整合体验&lt;/a&gt; —liaipeng&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http
+      
+    
+    </summary>
+    
+    
+      <category term="Network" scheme="Lstaras.github.com/tags/Network/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>公钥加密与数字签名</title>
+    <link href="Lstaras.github.com/2017/12/29/%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86%E4%B8%8E%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/"/>
+    <id>Lstaras.github.com/2017/12/29/公钥加密与数字签名/</id>
+    <published>2017-12-29T03:27:03.000Z</published>
+    <updated>2019-03-14T03:42:21.314Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="公钥加密与数字签名"><a href="#公钥加密与数字签名" class="headerlink" title="公钥加密与数字签名"></a>公钥加密与数字签名</h1><h2 id="密码学的演变"><a href="#密码学的演变" class="headerlink" title="密码学的演变"></a>密码学的演变</h2><ol><li><p>密码学的理论共识都遵循由奥古斯特•柯克霍夫在19世纪提出“柯克霍夫原则”——</p><blockquote><p>密码系统应该即使被所有人知道其运作步骤，仍然是安全的。</p></blockquote><p><strong>即算法是公开的，唯一需要保护的是密钥。</strong></p></li><li><p>后来，密码学主要使用<strong>对称加密</strong>的方式，即加密解密只需要同一个密码。</p><p> 但是对称加密有一个最大弱点：甲方必须把密钥告诉乙方，否则乙方无法解密。而保存和传递密钥，就成了最头疼的问题。</p></li><li><p>最后，密码学迎来了<strong>非对称加密</strong>。</p><p> 非对称加密需要两个（一对）密钥：<strong>公开密钥（publickey）</strong>和<strong>私有密钥（privatekey）</strong>，用公钥对数据进行加密后，只有对应的私钥才能解密；反之如果私钥用于加密，则只有对应的公钥才能解密。</p><p> 通信双方无须交换密钥就可以建立保密通信。</p></li></ol><h2 id="公钥与私钥的概念"><a href="#公钥与私钥的概念" class="headerlink" title="公钥与私钥的概念"></a>公钥与私钥的概念</h2><p>公钥、私钥：非对称加密的工具。</p><p>由于数学原理，<strong>从私钥推算公钥是可行的</strong>，<strong>从公钥逆推私钥是不可能的</strong>。</p><p>_一般_ 来说，<strong>公钥用于加密</strong>，<strong>私钥用于解密</strong>。</p><h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><ol><li><p>A与B进行通信，为防止通信信道上的监听，需要将消息进行加密传输。</p><pre><code>*   A、B的公钥公开展示在互联网上</code></pre><ul><li>A、B的私钥由自己保管，绝不泄露</li><li>当A向B发送消息时，A使用<strong>B的公钥加密</strong>消息并传输给B</li><li>其他人截获到此消息，无法解密，而B通过<strong>B的私钥解锁</strong>消息并获取到信息</li><li>反正亦然</li></ul></li><li><p>SSH通信原理：<br><img src="https://i.loli.net/2017/12/29/5a46010300062.png" alt></p><pre><code>*   客户端发送连接请求至服务器</code></pre><ul><li>服务器将自己的公钥交给客户端</li><li>客户端将登陆所用的密码用<strong>服务器的公钥加密</strong></li><li>客户端将加密后的字符串返回服务器</li><li>服务器使用<strong>私钥解锁</strong>字符串获取密码，并进行验证</li><li>服务器返回登陆结果</li></ul></li><li><p>比特币区块链</p><p> 在比特币系统中，私钥由32字节的随机数组成，通过私钥可以算出公钥，公钥经过一系列哈希及编码算法就得到了比特币中的地址。所以地址其实是公钥的另一种表现形式，可以理解为公钥的摘要。</p><p> 私钥—用户名<br> 公钥—地址—钱包号</p></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;公钥加密与数字签名&quot;&gt;&lt;a href=&quot;#公钥加密与数字签名&quot; class=&quot;headerlink&quot; title=&quot;公钥加密与数字签名&quot;&gt;&lt;/a&gt;公钥加密与数字签名&lt;/h1&gt;&lt;h2 id=&quot;密码学的演变&quot;&gt;&lt;a href=&quot;#密码学的演变&quot; class=&quot;head
+      
+    
+    </summary>
+    
+    
+      <category term="Network" scheme="Lstaras.github.com/tags/Network/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>网络-网线到网络设备</title>
+    <link href="Lstaras.github.com/2017/10/22/%E7%BD%91%E7%BB%9C-%E7%BD%91%E7%BA%BF%E5%88%B0%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/"/>
+    <id>Lstaras.github.com/2017/10/22/网络-网线到网络设备/</id>
+    <published>2017-10-22T11:30:41.000Z</published>
+    <updated>2017-10-22T13:54:20.730Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="2.jpg" alt="层-协议"></p><ol><li><p>网线包括双绞线和光纤：<br>光信号和电信号传输速度差不多，但是光纤的通信速率比电缆高，原因是电信号在提升速率的同时，其衰减也会增加，还会受到电磁噪声的影响。</p></li><li><p>网络包中的TCP头部控制信息在以太网和IP传输网络包的角度（转发设备 — 集线器、交换机、路由器）来看只是数据且不看其中的数据 — IP分片直接将含有TCP头部的网络包分开。</p></li><li><p>网卡中的PHY(MAU)用来输出正负电信号的电路。</p></li><li><p>直连接法 — MDI（网卡端）<br>交叉接法 — MDI-X（集线器、交换机端）</p></li><li><p>集线器（物理层）将发送至其内部的包往全部口转发（广播），其本身不对包的去向做选择。  </p><p> 交换机（数据链路层）通过类似网卡的接口（由外至内：RJ45 PHY(MAU) MAC模块 缓冲区）将包接收，根据MAC地址表，用交换电路进行指定的端口转发（点对点）。  </p><p> 但是集线器和交换机都是实现同样的功能，即<strong>同一网段内</strong>数据的通信（存在二层或者三层交换机可以实现上层的功能，但最基本的功能仍然是TCP/IP的第二层）。</p></li><li><p>交换机端口的MAC模块没有MAC地址；<br>当交换机发现一个包要返回原端口时会直接丢弃这个包；<br>当交换机发现一个包的目的MAC不在MAC表中，则向除原端口的所有端口转发；<br>交换机可以同时执行多个转发操作。  </p></li><li><p>自动协商功能（连接脉冲）</p></li><li><p>路由器：端口模块用来接收、发送网络包，其中端口使用MDI方式连接，具有MAC地址；包转发模块用来存储路由表。</p></li><li><p>路由表包括：</p><ul><li>目标地址</li><li>子网掩码</li><li>网关</li><li>接口</li><li>跃点数（越小越近，优先级越高）</li></ul></li><li><p>当匹配到多个符合要求的IP地址时，网络号越长越优先（子网掩码位数越长）；  </p><p>当无法匹配，则直接丢弃；  </p><p>但是路由表中有一条默认路由，子网掩码为0.0.0.0，意味着没有匹配到任何位数时转发到此路由的默认网关（对于一般的接入网用户，这里的默认网关就是接入网路由器）；  </p><p>包有TTL(IP头部)，每经过一次路由器即减一，至0被丢弃；  </p><p>路由器通过ARP查找下一跳的MAC地址</p></li><li><p>路由表的维护可以手动指定，也可以根据路由协议来自动维护（RIP OSPC BGP）</p></li><li><p>当对方网络采用路由聚合时，地址本身的子网掩码和路由表中的子网掩码是不同的。</p></li><li><p>IP委托以太网将包传输到下一个路由器。  </p></li><li><p>IP（路由器）负责将包送达通信对象这一整体过程，而其中将包传输到下一个路由器的过程则是由以太网（交换机）来负责的。</p></li><li><p>地址转换 — 内外网联通（外网地址的端口对应内网地址的IP与端口）</p></li><li><p>路由谋短，交换求快。</p></li><li><p><img src="1.jpg" alt="结构图"></p></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;2.jpg&quot; alt=&quot;层-协议&quot;&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;网线包括双绞线和光纤：&lt;br&gt;光信号和电信号传输速度差不多，但是光纤的通信速率比电缆高，原因是电信号在提升速率的同时，其衰减也会增加，还会受到电磁噪声的影响。&lt;/p&gt;
+&lt;/li&gt;
+&lt;l
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>网络-传输TCP/IP数据</title>
+    <link href="Lstaras.github.com/2017/10/17/%E7%BD%91%E7%BB%9C-%E4%BC%A0%E8%BE%93TCP%20IP%E6%95%B0%E6%8D%AE/"/>
+    <id>Lstaras.github.com/2017/10/17/网络-传输TCP IP数据/</id>
+    <published>2017-10-17T14:16:13.000Z</published>
+    <updated>2017-10-20T13:03:48.414Z</updated>
+    
+    <content type="html"><![CDATA[<p>图解：辉光管</p><blockquote><p>《网络是怎样连接的》 - 户根勤    </p></blockquote><h2 id="协议栈"><a href="#协议栈" class="headerlink" title="协议栈"></a>协议栈</h2><p>上一篇：<code>协议栈相当于执行信息的收发器，连接着更底层的硬件</code>  </p><p><img src="1.jpg" alt="协议栈"></p><p>协议栈的组成：</p><blockquote><p>套接字 — 存放控制信息的内存空间  </p><p>TCP协议收发数据(数据：Web mail…)  </p><p>UDP协议收发数据(控制：DNS)  </p><p>IP协议传送网络包、确定路由（ICMP、ARP） </p></blockquote><p>协议栈就是根据<strong>套接字中记录的控制信息</strong>来工作的。<br>套接字中的控制信息<strong>包括</strong>：ip地址、端口、状态（是否接收到消息、经过了多长的时间）等</p><h2 id="创建套接字"><a href="#创建套接字" class="headerlink" title="创建套接字"></a>创建套接字</h2><p>应用程序调用操作系统Socket库中的socket组件创建套接字。  </p><ol><li>协议栈内部通过向内存管理申请一块内存空间用来存放套接字</li><li>向套接字的内存空间中写入初始状态控制信息</li><li>将套接字的描述符告知应用程序</li></ol><h2 id="连接（会话-准备）"><a href="#连接（会话-准备）" class="headerlink" title="连接（会话/准备）"></a>连接（会话/准备）</h2><p><img src="2.jpg" alt></p><ol><li>将目标服务器的IP地址和端口告知TCP模块 -&gt; 用来生成TCP头部（控制信息）</li><li><p>TCP模块调用下层（IP模块、网卡驱动、网卡……）与目标服务器进行控制信息的交换（套接字对应的端口号）  </p><ul><li><p>TCP三次握手 — 在双方套接字区域记录控制信息进行相互间的配对（连接管道）  </p></li><li><p>SYN、ACK、RST……</p></li></ul></li><li><p>创建临时收发的内存空间</p></li></ol><h2 id="收发数据"><a href="#收发数据" class="headerlink" title="收发数据"></a>收发数据</h2><p>MTU、MSS、序号、长度、ACK号、窗口、窗口大小</p><p><strong>发送（write）：</strong>以根据MTU计算出的MSS长度为准，对数据进行拆分，并添加<strong>TCP头部</strong>，其中记录了<strong>控制信息</strong>（双方端口）、<strong>序号</strong>、<strong>数据偏移量</strong>，随后IP模块对每个数据块进行添加头部，其中包括<strong>MAC头部</strong>（记录下一跳的<strong>MAC地址</strong>）以及<strong>IP头部</strong>（记录<strong>分片偏移量</strong>、发送/接收方的<strong>IP地址</strong>） =&gt; <strong>IP分片操作</strong></p><p><strong>返回（read）：**</strong>ACK号<strong>（根据接收到数据中TCP头部的序号和数据总量计算）、</strong>窗口大小**（滑动窗口模式），</p><h2 id="断开并删除套接字"><a href="#断开并删除套接字" class="headerlink" title="断开并删除套接字"></a>断开并删除套接字</h2><ol><li>TCP头部添加FIN:1并委托IP模块向接收方发送消息</li><li>接收方返回ACK并在套接字中标记正在断开操作</li><li>接受方read得到全部数据，执行close</li><li>接收方发送FIN，得到ACK</li><li>等待一段时间删除套接字</li></ol><h2 id="序号、ACK、窗口"><a href="#序号、ACK、窗口" class="headerlink" title="序号、ACK、窗口"></a>序号、ACK、窗口</h2><p>序号：每一块数据相当于从头开始的第几字节</p><p><code>数据长度</code>：并没有在TCP头部定义，而是接收方通过<strong>网络包的长度</strong>减去<strong>头部的偏移量</strong>得到  </p><p>ACK号：已经收到了多少字节，作为返回消息</p><p>滑动窗口：接受方缓冲区清空后通知发送方缓冲区剩余空间</p><p>ACK与窗口更新的延迟一同发送：减少网络中ACK、窗口通知的包数</p><h2 id="MAC、ARP"><a href="#MAC、ARP" class="headerlink" title="MAC、ARP"></a>MAC、ARP</h2><p>利用广播对网络内的所有主机询问目标IP地址的<strong>MAC地址</strong>。</p><p>ARP缓存：减少网络中的ARP包数量</p><p>网卡出厂时ROM中保存着全球唯一的MAC地址</p><p>MAC地址由网卡驱动读取出来加载到MAC模块中</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;图解：辉光管&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;《网络是怎样连接的》 - 户根勤    &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;协议栈&quot;&gt;&lt;a href=&quot;#协议栈&quot; class=&quot;headerlink&quot; title=&quot;协议栈&quot;&gt;&lt;/a&gt;协议栈&lt;/h2&gt;
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>网络-浏览器生成消息</title>
+    <link href="Lstaras.github.com/2017/10/11/%E7%BD%91%E7%BB%9C-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%94%9F%E6%88%90%E6%B6%88%E6%81%AF/"/>
+    <id>Lstaras.github.com/2017/10/11/网络-浏览器生成消息/</id>
+    <published>2017-10-11T13:36:19.000Z</published>
+    <updated>2017-10-17T11:14:26.743Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>《网络是怎样连接的》 - 户根勤    </p></blockquote><h2 id="一点理解"><a href="#一点理解" class="headerlink" title="一点理解"></a>一点理解</h2><ol><li>应用程序相当于为用户的需求进行操作系统的调用</li><li>Socket库相当于各种为用户准备好的网络功能，等待被调用的同时也准备调用更下层的协议栈进行消息的传递</li><li>协议栈相当于执行信息的收发器，连接着更底层的硬件</li><li>套接字的对应性使得两种不同的网络设备有了对方的位置与描述，从而指向性的进行数据交换，形成管道一样的通讯线路</li><li>套接字在不同的层次有不同的标识方式，比如：描述符和端口</li></ol><h2 id="生成HTTP请求消息"><a href="#生成HTTP请求消息" class="headerlink" title="生成HTTP请求消息"></a>生成HTTP请求消息</h2><ol><li><p>浏览器首先会解析 <code>URL</code> ，判断出URL中的 <code>协议</code> 、 <code>Web服务器名</code> 、 <code>数据源（文件）的路径名</code> 。</p><blockquote><p>http: —<strong>协议</strong><br>//<br><a href="http://www.jijifujiji.group" target="_blank" rel="noopener">www.jijifujiji.group</a> —<strong>Web服务器名</strong><br>/<br>webdesign<br>/<br>index.html —<strong>文件路径</strong>  </p></blockquote></li><li><p>HTTP协议的内容，简而言之就是： <code>URI</code> 与 <code>方法</code> ，其中URI为目标文件、方法为请求Web服务器执行怎样的操作。</p></li><li><p>HTTP方法中最常用的就是 <code>get</code> （返回文件内容或返回程序的输出数据），此外还有 <code>post</code> （发送表单中填写的数据）、 <code>PUT</code> 、 <code>DELETE</code> 。  </p></li><li><p>HTTP请求消息的格式：   </p><ul><li>请求行：方法 URI HTTP版本</li><li>消息头：具体的请求内容描述（浏览器版本、语言、压缩格式、有效期等等）</li><li>空行</li><li>消息体：消息的主体（当使用get方法是其实不需要添加）  </li></ul></li><li><p>HTTP响应消息的格式：</p><ul><li>状态行：HTTP版本 状态码 响应短语</li><li>消息头</li><li>空行</li><li>消息体：返回的文件内容或输出的数据</li></ul></li><li><p>响应消息的状态码</p><ul><li>1xx 告知请求的处理进度和情况</li><li>2xx 成功</li><li>3xx 表示需要进一步操作</li><li>4xx 客户端错误</li><li>5xx 服务器端错误  </li></ul></li><li><p>由于<strong>每条请求消息中只能写1个URI</strong>，所以<strong>每次只能获取1个文件</strong>，多个文件（页面、图片）就需要多次与服务器获取。（HTTP1.1可以在1次连接中收发多个请求和响应）</p></li></ol><h2 id="向DNS服务器查询Web服务器"><a href="#向DNS服务器查询Web服务器" class="headerlink" title="向DNS服务器查询Web服务器"></a>向DNS服务器查询Web服务器</h2><ol><li><p>使用域名的目的：路由器处理固定长度的数据比不固定的效率要高、域名记忆方便。</p></li><li><p>DNS客户端—DNS解析器（Resolver），它包含在操作系统的Socket库中（Socket库是用于调用网络功能的程序的集合）。  </p></li><li><p>DNS服务器的地址在TCP/IP协议中定义，可能因为DHCP而自动获取。</p></li><li><p>Socket的请求消息由协议栈以UDP形式发给下一层次的网卡。</p></li></ol><h2 id="全世界DNS服务器的大接力"><a href="#全世界DNS服务器的大接力" class="headerlink" title="全世界DNS服务器的大接力"></a>全世界DNS服务器的大接力</h2><ol><li><p>DNS的查询并不是单个服务器就能完成的，需要互联网中各个域级服务器的协作。</p></li><li><p>DNS客户端向服务器发送的查询信息中包含：</p><ul><li>域名</li><li>Class（只有IN即Internet）</li><li>记录类型</li></ul></li><li><p>DNS资源记录类型</p><ul><li>A — 记录某域名的IPv4地址</li><li>AAAA — 记录某域名的IPv6地址</li><li>NS — 记录父区域的DNS服务器（权威DNS服务器）的IP地址</li><li>MX — 记录接受某电子邮件的服务器域名</li><li>CNAME — 记录某域名的别名</li><li>PTR — 记录根据IP地址反查应得到的域名</li><li>SOA — 记录这个区域的所有者（即标准区域中的服务器IP地址）<br><strong>注</strong>：所谓标准区域就是区别于复制出来的辅助DNS所在的辅助区域。</li></ul></li></ol><h2 id="委托协议栈发送消息"><a href="#委托协议栈发送消息" class="headerlink" title="委托协议栈发送消息"></a>委托协议栈发送消息</h2><ol><li><p>向操作系统内部的协议栈发出委托时，需要按照指定的顺序来调用Socket库中的程序组件。</p></li><li><p>收发数据的步奏</p><ol><li>服务器创建套接字进入等待模式，客户端创建套接字</li><li>客户端套接字连接到服务器的套接字上</li><li>收发数据</li><li><p>断开管道并删除套接字  </p><p><strong>注：</strong>其中每个阶段都会调用Socket库中的程序组件<strong>执行收发操作</strong> ，这些操作均由操作系统的协议栈来<strong>执行</strong>。（<strong>Socket委托协议栈</strong>） — Socket相当于应用程序与协议栈的<strong>桥梁</strong>。</p></li></ol></li><li><p>套接字</p><blockquote><p>套接字，是支持TCP/IP的网络通信的基本操作单元，可以看做是不同主机之间的进程进行双向通信的端点，简单的说就是通信的两方的一种约定，用套接字中的相关函数来完成通信过程。 </p><p> 其用于标识客户端请求的服务器和服务。  </p><p>非常非常简单的举例说明下: <strong>Socket</strong> = <strong>Ip address</strong> + <strong>TCP/UDP</strong> + <strong>port</strong> 。  </p><p> 它是网络通信过程中端点的抽象表示，包含进行网络通信必需的五种信息：<strong>连接使用的协议</strong>，<strong>本地主机的IP地址</strong>，<strong>本地进程的协议端口</strong>，<strong>远地主机的IP地址</strong>，<strong>远地进程的协议端口</strong>。</p></blockquote><ul><li><p>由Socket中的socket组件创建，随后协议栈返回一个<strong>描述符</strong>至内存中 — 描述符：<strong>应用程序</strong>用来识别不同的套接字</p></li><li><p>套接字可以同时存在多个（多个应用程序进程的并发）</p></li></ul></li><li><p>端口号&amp;描述符</p><ul><li>IP地址可以唯一的标识出网络上的一个网络硬件</li><li>连接操作的对象是套接字</li><li>端口用来标识套接字</li><li><p>端口与套接字的关系：<strong>当同时指定IP地址和端口号时就能明确的识别出某台具体的计算机上的某个具体的套接字。</strong></p></li><li><p>总的来说：描述符是<strong>应用程序（本机）用来识别套接字</strong>的机制<br>IP地址和端口是<strong>客户端与服务器间用来识别对方套接字</strong>的机制</p></li></ul></li><li><p>Socket库的程序组件</p><ul><li><strong>socket（IPv4 端口 状态…）</strong>： 协议栈分配一个套接字的存放内存，向此内存空间写入初始状态的控制信息并将此套接字的描述符告知应用程序</li><li><strong>connect（描述符 IP地址 端口号）</strong>：协议栈进行连接操作，把对方的IP和端口等信息保存在此描述符所识别的套接字中</li><li><strong>write（描述符 发送数据）</strong>：将数据送至套接字中，根据套接字中通讯对象的相关信息向其发送消息</li><li><strong>read（描述符 接收缓冲区）</strong>：消息返回后将响应信息存放在应用程序的内存地址中</li><li><strong>close（描述符）</strong>：断开连接，删除相关套接字</li></ul></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;《网络是怎样连接的》 - 户根勤    &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;一点理解&quot;&gt;&lt;a href=&quot;#一点理解&quot; class=&quot;headerlink&quot; title=&quot;一点理解&quot;&gt;&lt;/a&gt;一点理解&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;应
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>URI URL URN</title>
+    <link href="Lstaras.github.com/2017/10/10/URI-URL-URN/"/>
+    <id>Lstaras.github.com/2017/10/10/URI-URL-URN/</id>
+    <published>2017-10-10T10:16:01.000Z</published>
+    <updated>2019-03-14T02:47:53.964Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="三者的意义"><a href="#三者的意义" class="headerlink" title="三者的意义"></a>三者的意义</h3><hr><p>总的来说三者的关系：  </p><blockquote><p>URI</p><blockquote><p>URL</p><p>URN</p></blockquote></blockquote><p>URL和URN都是URI的子集，且二者也有交集。</p><p><strong>URI</strong> 统一资源标识符  </p><ul><li><p>组成</p><ol><li>资源命名机制 </li><li>存放资源的主机名</li><li>资源路径  </li></ol></li><li><p>例子<br><code>http://</code> <code>www.abc.com/abc/indec.html</code> <code>#abc</code>  </p></li><li><p>抽象<br>用来确定一个人的某种或几种信息</p></li></ul><p><strong>URL</strong> 统一资源定位符</p><p>URL目前在B-S架构中最为流行。  </p><ul><li><p>组成</p><ol><li>协议</li><li>Ip地址（端口）</li><li>具体地址（目录/文件）</li></ol></li><li><p>例子<br><code>http://</code> <code>www.abc.com/abc/index.html</code><br>在Web服务器可解析的URL中可能会有省略的情况，如：<br><code>http://</code> <code>www.abc.com</code><br><code>http://</code> <code>www.abc.com/</code><br><code>http://</code> <code>www.abc.com/abc</code><br><code>http://</code> <code>www.abc.com/abc/</code><br>以上均省略了服务器事先设置的默认文件，如：<code>/index.html</code> <code>/default.htm</code>…</p></li><li><p>抽象<br>一个人的住址</p></li></ul><p><strong>URN</strong> 统一资源命名符  </p><ul><li><p>组成  </p><ol><li>命名空间</li><li>资源名</li></ol></li><li><p>例子<br><code>www.abc.com/abc/index.html</code> <code>#abc</code></p></li><li><p>抽象<br>一个人的身份证号</p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;三者的意义&quot;&gt;&lt;a href=&quot;#三者的意义&quot; class=&quot;headerlink&quot; title=&quot;三者的意义&quot;&gt;&lt;/a&gt;三者的意义&lt;/h3&gt;&lt;hr&gt;
+&lt;p&gt;总的来说三者的关系：  &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;URI&lt;/p&gt;
+&lt;blockquote&gt;
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>html中的编码问题</title>
+    <link href="Lstaras.github.com/2017/10/03/html%E4%B8%AD%E7%9A%84%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/"/>
+    <id>Lstaras.github.com/2017/10/03/html中的编码问题/</id>
+    <published>2017-10-03T03:55:08.000Z</published>
+    <updated>2017-10-13T14:36:42.998Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="HTML中编码的问题"><a href="#HTML中编码的问题" class="headerlink" title="HTML中编码的问题"></a>HTML中编码的问题</h1><hr><ol><li><p><del> HTML文件需要转化为UTF-8格式 </del>  </p><p> <strong>HTML文件的编码和内容的编码要一致</strong>  </p><p> <strong>对于程序从数据库中调出的数据同样需要与HTML文件编码相同</strong></p></li><li><p>若需要浏览器解析（自己编写网页），需要在<head><meta name="generator" content="Hexo 3.8.0">下添加</head></p><p> <code>&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8;&quot;/&gt;</code></p></li><li><p>国标码:<code>gb2312</code></p></li><li><p>万国码:<code>UTF-8</code></p></li><li><p><code>Unicode</code></p></li><li><p><strong>注意</strong>：有时字体设置也会产生乱码</p></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;HTML中编码的问题&quot;&gt;&lt;a href=&quot;#HTML中编码的问题&quot; class=&quot;headerlink&quot; title=&quot;HTML中编码的问题&quot;&gt;&lt;/a&gt;HTML中编码的问题&lt;/h1&gt;&lt;hr&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;del&gt; HTML文件需要转化为UTF-8格式
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Git Preview</title>
+    <link href="Lstaras.github.com/2017/09/29/Git-Perview/"/>
+    <id>Lstaras.github.com/2017/09/29/Git-Perview/</id>
+    <published>2017-09-29T12:53:58.000Z</published>
+    <updated>2017-10-09T07:33:35.465Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://www.liaoxuefeng.com/files/attachments/0013848605496402772ffdb6ab448deb7eef7baa124171b000/0" alt="GitImg"></p><h1 id="Git你的生活"><a href="#Git你的生活" class="headerlink" title="Git你的生活"></a>Git你的生活</h1><pre><code>有没有因为删除某个文档而追悔莫及？  有没有因为同事间传送一个200k的文档而反复插拔优盘？有没有一艘看不见却可以挽救一切的时光机？</code></pre><p>Git！现在就让Git加入你的生活吧！</p><blockquote><p>Git是目前世界上最先进的分布式版本控制系统（没有之一）。  —廖雪峰</p></blockquote><p>能够优雅地管理那些繁杂的文档，这就是这篇文章的价值，来吧！</p><hr><h2 id="部署你的Git"><a href="#部署你的Git" class="headerlink" title="部署你的Git"></a>部署你的Git</h2><ul><li><p>安装：</p><p>  debian:<br>  sudo apt-get install git<br>  windows:<br>  <a href="https://git-for-windows.github.io/" target="_blank" rel="noopener">https://git-for-windows.github.io/</a> 下载最新版git</p></li><li><p>基本配置：</p><p>  git config –global user.name”xxxx”<br>  git config –global user.email”xxxx”</p></li><li><p>创建仓库（工作区）：<br>选择一个目录，在当前目录执行<code>git init</code>—将此目录作为一个工作区。<br><strong>注意：</strong> 此处将会产生一个<code>.git</code>文件，用来跟踪仓库中文件的版本；Git只能跟踪以<code>UTF-8</code>编码的文本文件，勿用word、图片等二进制文件；推荐使用<code>NotePad++</code>进行编辑。</p></li><li><p>暂存区与版本库<br>在这里我们可以先创建一个<code>.txt</code>的文本文件。 </p><p>  添加文件至暂存区:<br>  git add xxxx.txt<br>  提交文件（至版本库）:<br>  git commit -m “描述”</p></li><li><p>查询</p><p>  状态查询(当前工作区下所有文件是否有未加入版本库的修改):<br>  git status<br>  改动查询(工作区与暂存区的变动):<br>  git diff  </p></li><li><hr></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;https://www.liaoxuefeng.com/files/attachments/0013848605496402772ffdb6ab448deb7eef7baa124171b000/0&quot; alt=&quot;GitImg&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;G
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>MarkDown Preview</title>
+    <link href="Lstaras.github.com/2017/09/26/MarkDown-Perview/"/>
+    <id>Lstaras.github.com/2017/09/26/MarkDown-Perview/</id>
+    <published>2017-09-26T12:34:31.000Z</published>
+    <updated>2017-09-28T01:58:40.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://cdn.sspai.com/attachment/origin/2014/04/15/69488.png?imageView2/2/w/1120/q/90/interlace/1/ignore-error/1" alt="MarkDown">  </p><h1 id="MarkDown上手"><a href="#MarkDown上手" class="headerlink" title="MarkDown上手"></a>MarkDown上手</h1><p>此文针对Windows平台，使用<code>MarkDownPad 2</code>  </p><hr><h2 id="什么是-MarkDown"><a href="#什么是-MarkDown" class="headerlink" title="什么是 MarkDown"></a>什么是 MarkDown</h2><blockquote><p>MarkDown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到这里请不要被「标记」、「语言」所迷惑，MarkDown 的语法十分简单。常用的标记符号也不超过十个，这种相对于更为复杂的HTML 标记语言来说，MarkDown 可谓是十分轻量的，学习成本也不需要太多，且一旦熟悉这种语法规则，会有一劳永逸的效果。</p></blockquote><p>目前越来越多的新兴博客和代码托管网站都原生支持MarkDown的编辑，例如<code>Github</code>和<code>简书</code>,甚至编辑器也遍布各大主流平台。</p><hr><h2 id="使用-MarkDown-的优点"><a href="#使用-MarkDown-的优点" class="headerlink" title="使用 MarkDown 的优点"></a>使用 MarkDown 的优点</h2><ul><li>专注你的文字内容而不是排版样式。</li><li>轻松的导出 HTML、PDF 和本身的 .md 文件。</li><li>纯文本内容，兼容所有的文本编辑器与字处理软件。</li><li>可读，直观。适合所有人的写作语言。</li></ul><p><strong>注</strong>：笔者使用的是Windows平台的<code>MarkDownPad 2</code>，其免费版就包含了几乎所以的MarkDown特性，并且有实时预览窗口，十分方便。</p><hr><h2 id="MarkDown的基本操作"><a href="#MarkDown的基本操作" class="headerlink" title="MarkDown的基本操作"></a>MarkDown的基本操作</h2><blockquote><p>可以这么说，MarkDown的基本操作就是在抛弃大量的美化的基础上，以“两个”空格来与文章排版进行的交互。  </p></blockquote><p>具体来说：</p><hr><h3 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h3><pre><code># 一级标题    ## 二级标题          ### 三级标题</code></pre><hr><h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><ul><li><p>无序列表  </p><pre><code>* XXX  * XXX  * XXX</code></pre></li><li><p>有序列表  </p><pre><code>1. XXX2. XXX3. XXX</code></pre></li></ul><hr><h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><blockquote><p>XXX  </p></blockquote><pre><code>&gt; XXX  </code></pre><hr><h3 id="代码框"><a href="#代码框" class="headerlink" title="代码框"></a>代码框</h3><pre><code>`XXX`[Tab]XXX</code></pre><hr><h3 id="粗体·斜体"><a href="#粗体·斜体" class="headerlink" title="粗体·斜体"></a>粗体·斜体</h3><blockquote><p><strong>XXX</strong>  </p></blockquote><pre><code>**XXX**</code></pre><blockquote><p><em>XXX</em></p></blockquote><pre><code>*XXX*</code></pre><hr><h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><p><img src="/images/logo.png" alt="Demo1">  </p><pre><code>![ImageName](URL:)</code></pre><hr><h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p><a href="http://jijifujiji.group" target="_blank" rel="noopener">欢迎访问JiJiFuJiJi</a></p><pre><code>[LinkName](URL:)</code></pre><hr><h3 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h3><blockquote><p>暗中 </p><hr><p>观察</p></blockquote><pre><code>***</code></pre><hr><h3 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h3><blockquote><p><code>&lt;del&gt;</code> xxxx <code>&lt;/del&gt;</code></p></blockquote><p><del> xxxxx </del></p><hr><h3 id="关于换行"><a href="#关于换行" class="headerlink" title="关于换行"></a>关于换行</h3><blockquote><p>一种：<br>空格 空格 回车<br>一种：<br>回车</p></blockquote><p><code>在编辑器中设置</code></p><hr><h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>其实MarkDown的操作还有很多，尤其是排版的知识不得不掌握，甚至要求有个人的风格，这是个慢慢探索的过程。万事开头难，加油！</p><p><strong>注</strong>：这篇不算10月更新的博客，只是测试用。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;https://cdn.sspai.com/attachment/origin/2014/04/15/69488.png?imageView2/2/w/1120/q/90/interlace/1/ignore-error/1&quot; alt=&quot;MarkDown
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>First Blog</title>
+    <link href="Lstaras.github.com/2017/09/25/First-Blog/"/>
+    <id>Lstaras.github.com/2017/09/25/First-Blog/</id>
+    <published>2017-09-25T12:01:11.000Z</published>
+    <updated>2017-10-09T07:40:45.809Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Now"><a href="#Now" class="headerlink" title="Now"></a>Now</h1><p>我的博客在这一天将写出第一篇博客。</p><blockquote><p>2017-9-25</p></blockquote><h2 id="这支Blog"><a href="#这支Blog" class="headerlink" title="这支Blog"></a>这支Blog</h2><ol><li><p>JiJiFuJiJi</p><blockquote><p>jijifujiji.group  </p></blockquote></li><li><p>Hexo与Git<br>摸着石头过河，网页挂在了github下面。  </p><blockquote><p>node v8.5.0<br>Hexo v3.3.9<br>git v2.14.1</p></blockquote></li></ol><h2 id="当前的状况"><a href="#当前的状况" class="headerlink" title="当前的状况"></a>当前的状况</h2><ol><li><p>装备  </p><ul><li>树莓派1B  </li><li>树莓派3B  </li><li>笔记本  </li></ul></li><li><p>目标  </p><ul><li>Hexo+Git的博客更新  </li><li>寻找合适的<code>EDP</code>屏幕驱动板(del)</li><li>双系统树莓派（del）</li><li>等待时机和成熟的技术条件上线自己运维的<code>.cc</code></li></ul></li></ol><h2 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h2><h3 id="10月"><a href="#10月" class="headerlink" title="10月"></a>10月</h3><ol><li>更新5篇博客  </li><li>Git、Github学习  </li><li>RHCE巩固  </li><li>Javascript入门  </li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Now&quot;&gt;&lt;a href=&quot;#Now&quot; class=&quot;headerlink&quot; title=&quot;Now&quot;&gt;&lt;/a&gt;Now&lt;/h1&gt;&lt;p&gt;我的博客在这一天将写出第一篇博客。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2017-9-25&lt;/p&gt;
+&lt;/blockquote&gt;
+
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>

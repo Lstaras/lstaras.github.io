@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lstaras's huarache" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="《网络是怎样连接的》 - 户根勤      一点理解 应用程序相当于为用户的需求进行操作系统的调用 Socket库相当于各种为用户准备好的网络功能，等待被调用的同时也准备调用更下层的协议栈进行消息的传递 协议栈相当于执行信息的收发器，连接着更底层的硬件 套接字的对应性使得两种不同的网络设备有了对方的位置与描述，从而指向性的进行数据交换，形成管道一样的通讯线路 套接字在不同的层次有不同的标识方式，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络-浏览器生成消息">
+<meta property="og:url" content="Lstaras.github.com/2017/10/11/网络-浏览器生成消息/index.html">
+<meta property="og:site_name" content="Lstaras&#39;s huarache">
+<meta property="og:description" content="《网络是怎样连接的》 - 户根勤      一点理解 应用程序相当于为用户的需求进行操作系统的调用 Socket库相当于各种为用户准备好的网络功能，等待被调用的同时也准备调用更下层的协议栈进行消息的传递 协议栈相当于执行信息的收发器，连接着更底层的硬件 套接字的对应性使得两种不同的网络设备有了对方的位置与描述，从而指向性的进行数据交换，形成管道一样的通讯线路 套接字在不同的层次有不同的标识方式，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2017/10/13/59e0c73a9ec7c.jpg">
+<meta property="og:updated_time" content="2017-10-17T11:14:26.743Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络-浏览器生成消息">
+<meta name="twitter:description" content="《网络是怎样连接的》 - 户根勤      一点理解 应用程序相当于为用户的需求进行操作系统的调用 Socket库相当于各种为用户准备好的网络功能，等待被调用的同时也准备调用更下层的协议栈进行消息的传递 协议栈相当于执行信息的收发器，连接着更底层的硬件 套接字的对应性使得两种不同的网络设备有了对方的位置与描述，从而指向性的进行数据交换，形成管道一样的通讯线路 套接字在不同的层次有不同的标识方式，">
+<meta name="twitter:image" content="https://i.loli.net/2017/10/13/59e0c73a9ec7c.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="Lstaras.github.com/2017/10/11/网络-浏览器生成消息/">
+
+
+
+
+
+  <title>网络-浏览器生成消息 | Lstaras's huarache</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lstaras's huarache</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">No bb & do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="Lstaras.github.com/2017/10/11/网络-浏览器生成消息/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lstaras">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://i.loli.net/2019/03/13/5c88c0edee171.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lstaras's huarache">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">网络-浏览器生成消息</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-11T21:36:19+08:00">
+                2017-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox" href="https://i.loli.net/2017/10/13/59e0c73a9ec7c.jpg" rel="gallery_cjt838j8l000hcotxevruajjp" itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="https://i.loli.net/2017/10/13/59e0c73a9ec7c.jpg" itemprop="contentUrl">
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <blockquote>
+<p>《网络是怎样连接的》 - 户根勤    </p>
+</blockquote>
+<h2 id="一点理解"><a href="#一点理解" class="headerlink" title="一点理解"></a>一点理解</h2><ol>
+<li>应用程序相当于为用户的需求进行操作系统的调用</li>
+<li>Socket库相当于各种为用户准备好的网络功能，等待被调用的同时也准备调用更下层的协议栈进行消息的传递</li>
+<li>协议栈相当于执行信息的收发器，连接着更底层的硬件</li>
+<li>套接字的对应性使得两种不同的网络设备有了对方的位置与描述，从而指向性的进行数据交换，形成管道一样的通讯线路</li>
+<li>套接字在不同的层次有不同的标识方式，比如：描述符和端口</li>
+</ol>
+<h2 id="生成HTTP请求消息"><a href="#生成HTTP请求消息" class="headerlink" title="生成HTTP请求消息"></a>生成HTTP请求消息</h2><ol>
+<li><p>浏览器首先会解析 <code>URL</code> ，判断出URL中的 <code>协议</code> 、 <code>Web服务器名</code> 、 <code>数据源（文件）的路径名</code> 。</p>
+<blockquote>
+<p>http: —<strong>协议</strong><br>//<br><a href="http://www.jijifujiji.group" target="_blank" rel="noopener">www.jijifujiji.group</a> —<strong>Web服务器名</strong><br>/<br>webdesign<br>/<br>index.html —<strong>文件路径</strong>  </p>
+</blockquote>
+</li>
+<li><p>HTTP协议的内容，简而言之就是： <code>URI</code> 与 <code>方法</code> ，其中URI为目标文件、方法为请求Web服务器执行怎样的操作。</p>
+</li>
+<li><p>HTTP方法中最常用的就是 <code>get</code> （返回文件内容或返回程序的输出数据），此外还有 <code>post</code> （发送表单中填写的数据）、 <code>PUT</code> 、 <code>DELETE</code> 。  </p>
+</li>
+<li><p>HTTP请求消息的格式：   </p>
+<ul>
+<li>请求行：方法 URI HTTP版本</li>
+<li>消息头：具体的请求内容描述（浏览器版本、语言、压缩格式、有效期等等）</li>
+<li>空行</li>
+<li>消息体：消息的主体（当使用get方法是其实不需要添加）  </li>
+</ul>
+</li>
+<li><p>HTTP响应消息的格式：</p>
+<ul>
+<li>状态行：HTTP版本 状态码 响应短语</li>
+<li>消息头</li>
+<li>空行</li>
+<li>消息体：返回的文件内容或输出的数据</li>
+</ul>
+</li>
+<li><p>响应消息的状态码</p>
+<ul>
+<li>1xx 告知请求的处理进度和情况</li>
+<li>2xx 成功</li>
+<li>3xx 表示需要进一步操作</li>
+<li>4xx 客户端错误</li>
+<li>5xx 服务器端错误  </li>
+</ul>
+</li>
+<li><p>由于<strong>每条请求消息中只能写1个URI</strong>，所以<strong>每次只能获取1个文件</strong>，多个文件（页面、图片）就需要多次与服务器获取。（HTTP1.1可以在1次连接中收发多个请求和响应）</p>
+</li>
+</ol>
+<h2 id="向DNS服务器查询Web服务器"><a href="#向DNS服务器查询Web服务器" class="headerlink" title="向DNS服务器查询Web服务器"></a>向DNS服务器查询Web服务器</h2><ol>
+<li><p>使用域名的目的：路由器处理固定长度的数据比不固定的效率要高、域名记忆方便。</p>
+</li>
+<li><p>DNS客户端—DNS解析器（Resolver），它包含在操作系统的Socket库中（Socket库是用于调用网络功能的程序的集合）。  </p>
+</li>
+<li><p>DNS服务器的地址在TCP/IP协议中定义，可能因为DHCP而自动获取。</p>
+</li>
+<li><p>Socket的请求消息由协议栈以UDP形式发给下一层次的网卡。</p>
+</li>
+</ol>
+<h2 id="全世界DNS服务器的大接力"><a href="#全世界DNS服务器的大接力" class="headerlink" title="全世界DNS服务器的大接力"></a>全世界DNS服务器的大接力</h2><ol>
+<li><p>DNS的查询并不是单个服务器就能完成的，需要互联网中各个域级服务器的协作。</p>
+</li>
+<li><p>DNS客户端向服务器发送的查询信息中包含：</p>
+<ul>
+<li>域名</li>
+<li>Class（只有IN即Internet）</li>
+<li>记录类型</li>
+</ul>
+</li>
+<li><p>DNS资源记录类型</p>
+<ul>
+<li>A — 记录某域名的IPv4地址</li>
+<li>AAAA — 记录某域名的IPv6地址</li>
+<li>NS — 记录父区域的DNS服务器（权威DNS服务器）的IP地址</li>
+<li>MX — 记录接受某电子邮件的服务器域名</li>
+<li>CNAME — 记录某域名的别名</li>
+<li>PTR — 记录根据IP地址反查应得到的域名</li>
+<li>SOA — 记录这个区域的所有者（即标准区域中的服务器IP地址）<br><strong>注</strong>：所谓标准区域就是区别于复制出来的辅助DNS所在的辅助区域。</li>
+</ul>
+</li>
+</ol>
+<h2 id="委托协议栈发送消息"><a href="#委托协议栈发送消息" class="headerlink" title="委托协议栈发送消息"></a>委托协议栈发送消息</h2><ol>
+<li><p>向操作系统内部的协议栈发出委托时，需要按照指定的顺序来调用Socket库中的程序组件。</p>
+</li>
+<li><p>收发数据的步奏</p>
+<ol>
+<li>服务器创建套接字进入等待模式，客户端创建套接字</li>
+<li>客户端套接字连接到服务器的套接字上</li>
+<li>收发数据</li>
+<li><p>断开管道并删除套接字  </p>
+<p><strong>注：</strong>其中每个阶段都会调用Socket库中的程序组件<strong>执行收发操作</strong> ，这些操作均由操作系统的协议栈来<strong>执行</strong>。（<strong>Socket委托协议栈</strong>） — Socket相当于应用程序与协议栈的<strong>桥梁</strong>。</p>
+</li>
+</ol>
+</li>
+<li><p>套接字</p>
+<blockquote>
+<p>套接字，是支持TCP/IP的网络通信的基本操作单元，可以看做是不同主机之间的进程进行双向通信的端点，简单的说就是通信的两方的一种约定，用套接字中的相关函数来完成通信过程。 </p>
+<p> 其用于标识客户端请求的服务器和服务。  </p>
+<p>非常非常简单的举例说明下: <strong>Socket</strong> = <strong>Ip address</strong> + <strong>TCP/UDP</strong> + <strong>port</strong> 。  </p>
+<p> 它是网络通信过程中端点的抽象表示，包含进行网络通信必需的五种信息：<strong>连接使用的协议</strong>，<strong>本地主机的IP地址</strong>，<strong>本地进程的协议端口</strong>，<strong>远地主机的IP地址</strong>，<strong>远地进程的协议端口</strong>。</p>
+</blockquote>
+<ul>
+<li><p>由Socket中的socket组件创建，随后协议栈返回一个<strong>描述符</strong>至内存中 — 描述符：<strong>应用程序</strong>用来识别不同的套接字</p>
+</li>
+<li><p>套接字可以同时存在多个（多个应用程序进程的并发）</p>
+</li>
+</ul>
+</li>
+<li><p>端口号&amp;描述符</p>
+<ul>
+<li>IP地址可以唯一的标识出网络上的一个网络硬件</li>
+<li>连接操作的对象是套接字</li>
+<li>端口用来标识套接字</li>
+<li><p>端口与套接字的关系：<strong>当同时指定IP地址和端口号时就能明确的识别出某台具体的计算机上的某个具体的套接字。</strong></p>
+</li>
+<li><p>总的来说：描述符是<strong>应用程序（本机）用来识别套接字</strong>的机制<br>IP地址和端口是<strong>客户端与服务器间用来识别对方套接字</strong>的机制</p>
+</li>
+</ul>
+</li>
+<li><p>Socket库的程序组件</p>
+<ul>
+<li><strong>socket（IPv4 端口 状态…）</strong>： 协议栈分配一个套接字的存放内存，向此内存空间写入初始状态的控制信息并将此套接字的描述符告知应用程序</li>
+<li><strong>connect（描述符 IP地址 端口号）</strong>：协议栈进行连接操作，把对方的IP和端口等信息保存在此描述符所识别的套接字中</li>
+<li><strong>write（描述符 发送数据）</strong>：将数据送至套接字中，根据套接字中通讯对象的相关信息向其发送消息</li>
+<li><strong>read（描述符 接收缓冲区）</strong>：消息返回后将响应信息存放在应用程序的内存地址中</li>
+<li><strong>close（描述符）</strong>：断开连接，删除相关套接字</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/10/URI-URL-URN/" rel="next" title="URI URL URN">
+                <i class="fa fa-chevron-left"></i> URI URL URN
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/17/网络-传输TCP IP数据/" rel="prev" title="网络-传输TCP/IP数据">
+                网络-传输TCP/IP数据 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://i.loli.net/2019/03/13/5c88c0edee171.png" alt="Lstaras">
+            
+              <p class="site-author-name" itemprop="name">Lstaras</p>
+              <p class="site-description motion-element" itemprop="description">Loving in corner.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lstaras" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:caoglty@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+
+            <div id="music163player" class="motion-element">
+              <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=4191486&auto=1&height=66">
+              </iframe>
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一点理解"><span class="nav-number">1.</span> <span class="nav-text">一点理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成HTTP请求消息"><span class="nav-number">2.</span> <span class="nav-text">生成HTTP请求消息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向DNS服务器查询Web服务器"><span class="nav-number">3.</span> <span class="nav-text">向DNS服务器查询Web服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全世界DNS服务器的大接力"><span class="nav-number">4.</span> <span class="nav-text">全世界DNS服务器的大接力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#委托协议栈发送消息"><span class="nav-number">5.</span> <span class="nav-text">委托协议栈发送消息</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lstaras</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">7k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
